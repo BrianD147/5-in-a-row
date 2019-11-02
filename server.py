@@ -20,8 +20,6 @@ class GameServer():
         print("Players connected.. starting game")
         counter = 1
 
-        #Logic().boardSetup()    # Setup the empty board
-
         while gameRunning:
             try:     
                 self.updateClients(Logic().displayBoard())  # Display the game board
@@ -36,19 +34,12 @@ class GameServer():
         SERVER.close()
 
     def connectPlayers(self):
-        # Connect Player 1
-        playerObject, playerAddress = SERVER.accept() # Accept connection to the server (returns [Object, Address])
-        print("Client connected: ", playerAddress)
-        playerName = self.getName(playerObject)
-        PLAYER_OBJECTS[0] = {'playerObject': playerObject, 'playerAddress': playerAddress, 'playerName': playerName}  # populate PLAYER_OBJECTS with the clients object address, and name
-        playerObject.send("Welcome {}".format(playerName).encode())
-
-        # Connect Player 2
-        playerObject, playerAddress = SERVER.accept() # Accept connection to the server (returns [Object, Address])
-        print("Client connected: ", playerAddress)
-        playerName = self.getName(playerObject)
-        PLAYER_OBJECTS[1] = {'playerObject': playerObject, 'playerAddress': playerAddress}
-        playerObject.send("Welcome {}".format(playerName).encode())
+        for i in range(2):
+            playerObject, playerAddress = SERVER.accept() # Accept connection to the server (returns [Object, Address])
+            print("Client connected: ", playerAddress)
+            playerName = self.getName(playerObject)
+            PLAYER_OBJECTS[i] = {'playerObject': playerObject, 'playerAddress': playerAddress, 'playerName': playerName}  # populate PLAYER_OBJECTS with the clients object address, and name
+            playerObject.send("Welcome {}".format(playerName).encode())
 
         self.updateClients("Both Players connected.. Lets Play!")
 
@@ -61,7 +52,6 @@ class GameServer():
         return playerObject.recv(1024).decode()  # Return response (bufsize should be small power of 2)
 
     def updateClients(self, update):
-        #update += '\n'  # Newline needed to progress the console
         for count in PLAYER_OBJECTS:
             PLAYER_OBJECTS[count]['playerObject'].send(update.encode())
 
