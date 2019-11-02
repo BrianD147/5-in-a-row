@@ -14,6 +14,10 @@ class Logic(object):
             boardPrint += '\n'
         return boardPrint
 
-    def placePiece(self, pos):
-        self.board[self.pieceLevels[pos]][pos-1] = '[\u25CF]'
+    def placePiece(self, counter, pos):
+        pos -= 1
+        if(counter == 0):
+            self.board[self.pieceLevels[pos]][pos] = '[\u25CF]'
+        else:
+            self.board[self.pieceLevels[pos]][pos] = '[o]'
         self.pieceLevels[pos] -= 1

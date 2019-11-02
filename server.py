@@ -30,7 +30,7 @@ class GameServer():
                 counter = 1 - counter
 
                 clientInput = self.getInput(PLAYER_OBJECTS[counter]['playerObject'])    # Input request
-                Logic().placePiece(int(clientInput))
+                Logic().placePiece(counter, int(clientInput))
             except ConnectionResetError:
                 gameRunning = False
         SERVER.close()
