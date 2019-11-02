@@ -39,16 +39,22 @@ class GameServer():
         # Connect Player 1
         playerObject, playerAddress = SERVER.accept() # Accept connection to the server (returns [Object, Address])
         print("Client connected: ", playerAddress)
-        PLAYER_OBJECTS[0] = {'playerObject': playerObject, 'playerAddress': playerAddress}  # populate PLAYER_OBJECTS with the clients object and address
-        playerObject.send("You are Player 1".encode())
+        playerName = self.getName(playerObject)
+        PLAYER_OBJECTS[0] = {'playerObject': playerObject, 'playerAddress': playerAddress, 'playerName': playerName}  # populate PLAYER_OBJECTS with the clients object address, and name
+        playerObject.send("Welcome {}".format(playerName).encode())
 
         # Connect Player 2
         playerObject, playerAddress = SERVER.accept() # Accept connection to the server (returns [Object, Address])
         print("Client connected: ", playerAddress)
+        playerName = self.getName(playerObject)
         PLAYER_OBJECTS[1] = {'playerObject': playerObject, 'playerAddress': playerAddress}
-        playerObject.send("You are Player 2".encode())
+        playerObject.send("Welcome {}".format(playerName).encode())
 
         self.updateClients("Both Players connected.. Lets Play!")
+
+    def getName(self, playerObject):
+        playerObject.send("Enter your name: ".encode())
+        return playerObject.recv(1024).decode()
 
     def getInput(self, playerObject):
         playerObject.send("Enter a column (1-9): ".encode()) # Send input request

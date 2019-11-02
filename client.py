@@ -9,7 +9,12 @@ class GameClient():
         CLIENT.connect_ex((SERVER_IP, SERVER_PORT)) # Bind localhost to the socket
 
         gameRunning = True
-        
+
+        serverMessage = CLIENT.recv(1024).decode()  # Receive name message
+        print(serverMessage)    # print
+        clientResponse = input()    # Read the name
+        CLIENT.send(clientResponse.encode())    # And send it
+
         while gameRunning:
             serverMessage = CLIENT.recv(1024).decode() # Receive message
             print(serverMessage)
