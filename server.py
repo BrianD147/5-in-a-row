@@ -1,5 +1,7 @@
 import socket   # https://docs.python.org/3/library/socket.html
 
+from logic import Logic
+
 SERVER_IP = '127.0.0.1' # Localhost IP
 SERVER_PORT = 3000  # Localhost port
 SERVER = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # Initialise a socket instance (AF_INET -> ipv4 , SOCK_STEAM -> TCP) 
@@ -18,15 +20,17 @@ class GameServer():
         print("Players connected.. starting game")
         counter = 1
 
+        #Logic().boardSetup()    # Setup the empty board
+
         while gameRunning:
             try:     
-                self.updateClients("\n......Board State.....\n")
+                self.updateClients(Logic().displayBoard())  # Display the game board
                 PLAYER_OBJECTS[counter]['playerObject'].send("Opponents turn...".encode())   # Opponents turn message
 
                 counter = 1 - counter
 
                 clientInput = self.getInput(PLAYER_OBJECTS[counter]['playerObject'])    # Input request
-                #self.updateClients(clientInput)
+                Logic().placePiece(int(clientInput))
             except ConnectionResetError:
                 gameRunning = False
         SERVER.close()
