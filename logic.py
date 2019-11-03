@@ -27,11 +27,18 @@ class Logic(object):
         return hasWon
 
     def checkForWin(self, currentPiece):
-        hasWon = self.checkHorizontal(currentPiece)
-        return hasWon
+        if self.checkHorizontal(currentPiece): return True
+        if self.checkVertical(currentPiece): return True
+        return False
 
     def checkHorizontal(self, currentPiece):
         for c in range(5):
             for r in range(6):
                 if self.board[r][c] == currentPiece and self.board[r][c+1] == currentPiece and self.board[r][c+2] == currentPiece and self.board[r][c+3] == currentPiece and self.board[r][c+4] == currentPiece:
+                    return True
+
+    def checkVertical(self, currentPiece):
+        for c in range(9):
+            for r in range(2):
+                if self.board[r][c] == currentPiece and self.board[r+1][c] == currentPiece and self.board[r+2][c] == currentPiece and self.board[r+3][c] == currentPiece and self.board[r+4][c] == currentPiece:
                     return True
