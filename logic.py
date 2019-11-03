@@ -5,7 +5,7 @@ EMPTY_SLOT = '[ ]'
 class Logic(object):
 
     board = [[EMPTY_SLOT for col in range(9)] for row in range(6)]   # Global array of game board
-    pieceLevels = np.array([5, 5, 5, 5, 5, 5, 5, 5, 5])
+    pieceLevels = [5, 5, 5, 5, 5, 5, 5, 5, 5]
     
     def displayBoard(self):
         boardPrint = '\n========GAME BOARD=========\n'
@@ -17,7 +17,21 @@ class Logic(object):
     def placePiece(self, counter, pos):
         pos -= 1
         if(counter == 0):
-            self.board[self.pieceLevels[pos]][pos] = '[\u25CF]'
+            currentPiece = '[\u25CF]'
         else:
-            self.board[self.pieceLevels[pos]][pos] = '[o]'
+            currentPiece = '[o]'
+        self.board[self.pieceLevels[pos]][pos] = currentPiece
         self.pieceLevels[pos] -= 1
+
+        hasWon = self.checkForWin(currentPiece)
+        return hasWon
+
+    def checkForWin(self, currentPiece):
+        hasWon = self.checkHorizontal(currentPiece)
+        return hasWon
+
+    def checkHorizontal(self, currentPiece):
+        for c in range(6):
+            for r in range(6):
+                if self.board[r][c] == currentPiece and self.board[r][c+1] == currentPiece and self.board[r][c+2] == currentPiece and self.board[r][c+3] == currentPiece:
+                    return True

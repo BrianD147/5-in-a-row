@@ -16,13 +16,17 @@ class GameClient():
         CLIENT.send(clientResponse.encode())    # And send it
 
         while gameRunning:
-            serverMessage = CLIENT.recv(1024).decode() # Receive message
-            print(serverMessage)
+            try:
+                serverMessage = CLIENT.recv(1024).decode() # Receive message
+                print(serverMessage)
 
-            if "Enter a column (1-9): " in serverMessage:
-                clientResponse = input()   # Read the input
-                CLIENT.send(clientResponse.encode())    # And send it
-
+                if "Enter a column (1-9): " in serverMessage:
+                    clientResponse = input()   # Read the input
+                    CLIENT.send(clientResponse.encode())    # And send it
+                elif "GAME OVER" in serverMessage:
+                    gameRunning = False
+            except ConnectionResetError:
+                gameRunning = False
         CLIENT.close()
 
 GameClient().start()    # Startup

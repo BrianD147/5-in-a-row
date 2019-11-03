@@ -28,7 +28,11 @@ class GameServer():
                 counter = 1 - counter
 
                 clientInput = self.getInput(PLAYER_OBJECTS[counter]['playerObject'], PLAYER_OBJECTS[counter]['playerName'])    # Input request
-                Logic().placePiece(counter, int(clientInput))
+                hasWon = Logic().placePiece(counter, int(clientInput))
+                if(hasWon):
+                    self.updateClients(Logic().displayBoard())  # Display final game board
+                    self.updateClients("\nGAME OVER\n{} has Won!".format(PLAYER_OBJECTS[counter]['playerName']))    # send game over message
+                    gameRunning = False
             except ConnectionResetError:
                 gameRunning = False
         SERVER.close()
