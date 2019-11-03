@@ -27,7 +27,7 @@ class GameServer():
 
                 counter = 1 - counter
 
-                clientInput = self.getInput(PLAYER_OBJECTS[counter]['playerObject'])    # Input request
+                clientInput = self.getInput(PLAYER_OBJECTS[counter]['playerObject'], PLAYER_OBJECTS[counter]['playerName'])    # Input request
                 Logic().placePiece(counter, int(clientInput))
             except ConnectionResetError:
                 gameRunning = False
@@ -47,8 +47,8 @@ class GameServer():
         playerObject.send("Enter your name: ".encode())
         return playerObject.recv(1024).decode()
 
-    def getInput(self, playerObject):
-        playerObject.send("Enter a column (1-9): ".encode()) # Send input request
+    def getInput(self, playerObject, playerName):
+        playerObject.send("{} : Enter a column (1-9): ".format(playerName).encode()) # Send input request
         return playerObject.recv(1024).decode()  # Return response (bufsize should be small power of 2)
 
     def updateClients(self, update):

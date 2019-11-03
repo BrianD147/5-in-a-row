@@ -19,7 +19,7 @@ class GameClient():
             serverMessage = CLIENT.recv(1024).decode() # Receive message
             print(serverMessage)
 
-            if serverMessage == "Enter a column (1-9): ":
+            if "Enter a column (1-9): " in serverMessage:
                 clientResponse = input()   # Read the input
                 CLIENT.send(clientResponse.encode())    # And send it
 
