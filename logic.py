@@ -31,7 +31,7 @@ class Logic(object):
         return hasWon
 
     def checkHorizontal(self, currentPiece):
-        for c in range(6):
+        for c in range(5):
             for r in range(6):
-                if self.board[r][c] == currentPiece and self.board[r][c+1] == currentPiece and self.board[r][c+2] == currentPiece and self.board[r][c+3] == currentPiece:
+                if self.board[r][c] == currentPiece and self.board[r][c+1] == currentPiece and self.board[r][c+2] == currentPiece and self.board[r][c+3] == currentPiece and self.board[r][c+4] == currentPiece:
                     return True
