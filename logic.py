@@ -1,5 +1,3 @@
-import numpy as np
-
 EMPTY_SLOT = '[ ]'
 ROWS = 6
 COLS = 9
